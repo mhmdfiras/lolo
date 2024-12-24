@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special Surprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Montserrat', sans-serif;
+        background-color: #fff;
+        position: relative;
+        transition: background-color 1s;
+    }
+    #message {
+        display: none;
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        color: red;
+        opacity: 0;
+        transition: all 1s ease-out;
+    }
+    #countdown {
+        font-size: 48px;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        transition: transform 0.5s ease-out;
+    }
+    #realTime {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        font-size: 18px;
+    }
+    .button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        padding: 10px;
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<audio id="endSound" src="bb.mp3.mp3"></audio> <!-- Add your sound file path here -->
+<div id="countdown">5</div>
+<div id="message">I love you ya ahla habbobah bl koooooon </div>
+<div id="realTime"></div>
+<button class="button" onclick="restartCountdown()">Restart Countdown</button>
+<script>
+    let countdownElement = document.getElementById('countdown');
+    let messageElement = document.getElementById('message');
+    let endSound = document.getElementById('endSound');
+    let realTimeDisplay = document.getElementById('realTime');
+    let countdownValue = 5; // Countdown from 5 seconds
+    let bodyElement = document.body;
+    let timer;
+
+    function updateRealTime() {
+        realTimeDisplay.innerText = new Date().toLocaleTimeString();
+    }
+    setInterval(updateRealTime, 1000); // Update real-time clock every second
+
+    function startCountdown() {
+        countdownValue = 5;
+        countdownElement.innerText = countdownValue; // Initially show the countdown number
+        countdownElement.style.display = 'block';
+        messageElement.style.display = 'none';
+        messageElement.style.opacity = 0;
+        messageElement.style.transform = 'translate(-50%, -50%) scale(0)';
+        timer = setInterval(() => {
+            countdownValue--;
+            countdownElement.innerText = countdownValue;
+            countdownElement.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            setTimeout(() => {
+                countdownElement.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 500); // Reset scaling
+
+            bodyElement.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 90%)`; // Change background color
+
+            if (countdownValue <= 0) {
+                clearInterval(timer); // Stop the countdown
+                countdownElement.style.display = 'none'; // Hide the countdown
+                messageElement.style.display = 'block';
+                setTimeout(() => {
+                    messageElement.style.opacity = 1;
+                    messageElement.style.transform = 'translate(-50%, -50%) scale(1)';
+                    endSound.play(); // Play sound effect
+                }, 500); // Delay for smooth transition
+            }
+        }, 1000); // Update countdown every second
+    }
+
+   
+
+    startCountdown(); // Initial start
+</script>
+</body>
+</html>
